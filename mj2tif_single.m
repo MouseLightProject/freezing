@@ -3,7 +3,7 @@ function mj2tif_single(input_file_name, output_file_name, do_verify)
     % at output_file_name.  Will overwrite pre-existing file at
     % output_file_name, if present.
     
-    if nargin<3 ,
+    if nargin<3 || isempty(do_verify) ,
         do_verify = false ;
     end
     
