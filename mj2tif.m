@@ -39,7 +39,7 @@ function mj2tif(input_folder_name, output_folder_name, do_verify, do_run_on_clus
                                     output_entity_path, ...
                                     fif(do_verify, 'true', 'false')) ;
                         fprintf('Command line: %s\n', command_line) ;                        
-                        bsub_command_line = sprintf('bsub -o /dev/null -e /dev/null %s', command_line) ;
+                        bsub_command_line = sprintf('bsub -P mouselight -o /dev/null -e /dev/null %s', command_line) ;
                         fprintf('bsub Command line: %s\n', bsub_command_line) ;
                         system(bsub_command_line) ;
                     else
