@@ -13,9 +13,9 @@ function mj2tif_single(input_file_name, output_file_name, do_verify)
         frame_index = frame_index + 1 ; 
         frame = input_file.readFrame() ;
         if frame_index == 1 ,
-            imwrite(frame, output_file_name, 'tif', 'WriteMode', 'overwrite',  'Compression', 'none') ;
+            imwrite(frame, output_file_name, 'tif', 'WriteMode', 'overwrite',  'Compression', 'deflate') ;
         else
-            imwrite(frame, output_file_name, 'tif', 'WriteMode', 'append',  'Compression', 'none') ;            
+            imwrite(frame, output_file_name, 'tif', 'WriteMode', 'append',  'Compression', 'deflate') ;            
         end        
     end    
     
