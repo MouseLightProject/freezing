@@ -1,4 +1,4 @@
-function mj2_from_tif(mj2_output_folder_name, tif_input_folder_name, compression_ratio, do_verify, do_delete_input_files, do_run_on_cluster)
+function mj2_from_tif(mj2_output_folder_name, tif_input_folder_name, compression_ratio, do_verify, do_run_on_cluster)
     % Converts each .mj2 file in input_folder_name to a multi-image .tif in
     % output_folder_name.  Will overwrite pre-existing files in
     % output_folder_name, if present.
@@ -8,9 +8,6 @@ function mj2_from_tif(mj2_output_folder_name, tif_input_folder_name, compression
     end
     if ~exist('do_verify', 'var') || isempty(do_verify) ,
         do_verify = false ;
-    end
-    if ~exist('do_delete_input_files', 'var') || isempty(do_delete_input_files) ,
-        do_delete_input_files = false ;
     end
     if ~exist('do_run_on_cluster', 'var') || isempty(do_run_on_cluster) ,
         do_run_on_cluster = false ;
@@ -27,7 +24,7 @@ function mj2_from_tif(mj2_output_folder_name, tif_input_folder_name, compression
         if exist(tif_input_entity_path, 'dir') ,
             % if a folder, recurse
             mj2_output_entity_path = fullfile(mj2_output_folder_name, tif_input_entity_name) ;
-            mj2_from_tif(mj2_output_entity_path, tif_input_entity_path, compression_ratio, do_verify, do_delete_input_files, do_run_on_cluster) ;
+            mj2_from_tif(mj2_output_entity_path, tif_input_entity_path, compression_ratio, do_verify, do_run_on_cluster) ;
         else
             % if a normal file, convert to .mj2 if it's a .tif, or just
             % copy otherwise
@@ -44,7 +41,7 @@ function mj2_from_tif(mj2_output_folder_name, tif_input_folder_name, compression
                         command_line = ...
                             sprintf(['matlab -nojvm ' ...
                                      '-r "mj2_output_entity_path = ''%s'';  tif_input_entity_path = ''%s''; do_verify = %s; ' ...
-                                         'compression_ratio = %s; do_delete_input_file = %s; ' ...
+                                         'compression_ratio = %s; ' ...
                                          'temporary_tif_input_file_path = ''%s'';  temporary_mj2_output_file_path = ''%s''; ' ...                                     
                                          'copyfile(tif_input_entity_path, temporary_tif_input_file_path); ' ...
                                          'mj2_from_tif_single(temporary_mj2_output_file_path, temporary_tif_input_file_path, compression_ratio, do_verify); ' ...
@@ -57,7 +54,6 @@ function mj2_from_tif(mj2_output_folder_name, tif_input_folder_name, compression
                                     tif_input_entity_path, ...
                                     fif(do_verify, 'true', 'false'),  ...                                    
                                     num2str(compression_ratio, '%.18g') , ...
-                                    fif(do_delete_input_files, 'true', 'false'), ...
                                     temporary_tif_input_file_path, ...
                                     temporary_mj2_output_file_path) ;
                         fprintf('Command line: %s\n', command_line) ;                        
@@ -71,7 +67,7 @@ function mj2_from_tif(mj2_output_folder_name, tif_input_folder_name, compression
                         fprintf('bsub Command line: %s\n', bsub_command_line) ;
                         system(bsub_command_line) ;
                     else
-                        mj2_from_tif_single(mj2_output_entity_path, tif_input_entity_path, compression_ratio, do_verify, do_delete_input_files) ;
+                        mj2_from_tif_single(mj2_output_entity_path, tif_input_entity_path, compression_ratio, do_verify) ;
                     end
                     duration  = toc(tic_id) ;
                     fprintf('Took %g seconds\n', duration) ;
@@ -81,20 +77,7 @@ function mj2_from_tif(mj2_output_folder_name, tif_input_folder_name, compression
                 if ~exist(mj2_output_entity_path, 'file') ,
                     copyfile(tif_input_entity_path, mj2_output_entity_path) ;                    
                 end
-                % Delete input file, if desired
-                if do_delete_input_files ,
-                    delete(tif_input_entity_path) ;
-                end                
             end
         end
-    end
-    
-    % Delete the input folder if we were asked to delete input files, and if the input folder is really empty
-    if do_delete_input_files ,
-        tif_input_entity_names = setdiff(simple_dir(tif_input_folder_name), {'.' '..'}) ;
-        tif_input_entity_count = length(tif_input_entity_names) ;
-        if tif_input_entity_count==0 ,
-            rmdir(tif_input_folder_name) ;
-        end
-    end
+    end    
 end
