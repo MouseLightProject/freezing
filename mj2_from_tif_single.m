@@ -21,8 +21,14 @@ function mj2_from_tif_single(mj2_output_file_name, tif_input_file_name, compress
     write_16bit_grayscale_mj2(mj2_output_file_name, stack, compression_ratio) ;
     
     % Verify, if desired
+    
+    % This won't really catch errors on the cluster!
+    % Should work if we do a quit(1) while running on the cluster, since we write to
+    % local scratch, and only copy to proper location if this function returns
+    % without error.
+    
     if do_verify ,
-        if ~is_mj2_similar_to_tif(mj2_output_file_name, tif_input_file_name) ,
+        if ~is_mj2_similar_to_tif(mj2_output_file_name, stack) ,            
             error('%s is not sufficiently similar to %s\n', mj2_output_file_name, tif_input_file_name) ;
         end
     end
