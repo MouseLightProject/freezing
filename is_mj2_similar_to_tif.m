@@ -1,7 +1,8 @@
-function result = is_mj2_similar_to_tif(mj2_file_name, tif_stack)
+function result = is_mj2_similar_to_tif(mj2_stack, tif_stack)
     % Checks if an mj2 file is similar to a .tif file.
-    ticId = tic() ;
-    mj2_stack = read_16bit_grayscale_mj2(mj2_file_name) ;
+    % Although really, can compare any two stacks.
+    
+    %mj2_stack = read_16bit_grayscale_mj2(mj2_file_name) ;
     %tif_stack = read_16bit_grayscale_tif(tif_file_name) ;
     if isequal(class(mj2_stack), class(tif_stack)) && isequal(size(mj2_stack), size(tif_stack)) ,
         if all(all(all(mj2_stack==tif_stack))) ,
@@ -23,6 +24,4 @@ function result = is_mj2_similar_to_tif(mj2_file_name, tif_stack)
     else
         result = false ;
     end
-    elapsed_time = toc(ticId) ;
-    fprintf('Time to verify was %g seconds.\n', elapsed_time) ;
 end
