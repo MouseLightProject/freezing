@@ -8,7 +8,7 @@ function verify_files_after_mj2_from_tif(mj2_output_folder_name, tif_input_folde
     else
         error('Target folder %s had discrepancies', mj2_output_folder_name) ;
     end    
-end    
+end
 
 
 
