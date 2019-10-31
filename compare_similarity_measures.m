@@ -13,3 +13,8 @@ toc(tic_id)
 tic_id = tic() ;
 vmre_value = voxelwise_mean_relative_error_with_guard(mj2_stack, tif_stack, 1/256) 
 toc(tic_id)
+
+tic_id = tic() ;
+fpe_value = fraction_power_explained(mj2_stack, tif_stack) 
+toc(tic_id)
+
