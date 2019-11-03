@@ -28,12 +28,12 @@ function mj2_from_tif_single(mj2_output_file_name, tif_input_file_name, compress
     % without error.
     
     if do_verify ,
-        ticId = tic() ;
+        %ticId = tic() ;
         mj2_stack = read_16bit_grayscale_mj2(mj2_output_file_name) ;
         if ~is_mj2_similar_to_tif(mj2_stack, tif_stack) ,            
             error('%s is not sufficiently similar to %s\n', mj2_output_file_name, tif_input_file_name) ;
         end
-        elapsed_time = toc(ticId) ;
-        fprintf('Time to verify was %g seconds.\n', elapsed_time) ;
+        %elapsed_time = toc(ticId) ;
+        %fprintf('Time to verify was %g seconds.\n', elapsed_time) ;
     end
 end

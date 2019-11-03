@@ -14,7 +14,7 @@ function result = fraction_power_explained(mj2_stack, tif_stack)
             % 1 in this case because we divided by 2^16-1.  So PSNR = 1/MSE.  So the "PNSR"
             % is just MSE.  So 1-mse is the fraction of variance explained
             
-            result = 1 - error_power/image_power
+            result = 1 - error_power/image_power ;
         end
     else
         result = 0 ;

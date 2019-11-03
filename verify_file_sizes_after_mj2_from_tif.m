@@ -30,7 +30,7 @@ function is_all_well = verify_file_sizes_after_mj2_from_tif_helper(mj2_output_fo
                 mj2_output_entity_path = fullfile(mj2_output_folder_name, replace_extension(tif_input_entity_name, '.mj2')) ;
                 if exist(mj2_output_entity_path, 'file') ,
                     tif_file_size = tif_input_entity.bytes ;
-                    mj2_file_size = file_size(mj2_output_entity_path) ;
+                    mj2_file_size = get_file_size(mj2_output_entity_path) ;
                     desired_mj2_file_size = round(tif_file_size/compression_ratio) ;
                     if mj2_file_size == desired_mj2_file_size ,
                         % do nothing, this is fine and good, and should handle zero-length files
@@ -53,7 +53,7 @@ function is_all_well = verify_file_sizes_after_mj2_from_tif_helper(mj2_output_fo
                 mj2_output_entity_path = fullfile(mj2_output_folder_name, tif_input_entity_name) ;  % input not really a tif, output not really a .mj2
                 if exist(mj2_output_entity_path, 'file') ,
                     tif_file_size = tif_input_entity.bytes ;
-                    mj2_file_size = file_size(mj2_output_entity_path) ;
+                    mj2_file_size = get_file_size(mj2_output_entity_path) ;
                     if mj2_file_size == tif_file_size ,
                         % do nothing, this is fine and good
                     else
