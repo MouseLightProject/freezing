@@ -4,7 +4,7 @@ function result = verify_frozen_files(mj2_root_folder_path, tif_root_folder_path
     fprintf('Done with batch preverification of large files.\n') ;
     
     fprintf('Doing verification of large files...\n') ;
-    is_all_well_with_big_files = verify_big_files_after_mj2_from_tif(tif_root_folder_path, mj2_root_folder_path) ;
+    is_all_well_with_big_files = verify_mj2_files_after_mj2_from_tif(tif_root_folder_path, mj2_root_folder_path) ;
     fprintf('Done with verification of large files.\n') ;
     
     if is_all_well_with_big_files, 
