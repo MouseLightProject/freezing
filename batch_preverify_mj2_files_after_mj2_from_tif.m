@@ -1,4 +1,4 @@
-function batch_preverify_big_files_after_mj2_from_tif(mj2_folder_name, tif_folder_name, do_submit)
+function batch_preverify_mj2_files_after_mj2_from_tif(mj2_folder_name, tif_folder_name, do_submit)
     % Makes sure all the big target files are present in the the destination, and
     % are similar to their source files.
     
