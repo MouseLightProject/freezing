@@ -17,6 +17,10 @@ function preverify_single_tif_file_after_mj2_from_tif(tif_file_path, tif_root_fo
         tif_stack = read_16bit_grayscale_tif(tif_file_path) ;
         if is_mj2_similar_to_tif(mj2_stack, tif_stack) ,
             touch(check_file_path) ;
+        else
+            %nop() ;
         end
+    else
+        %nop() ;
     end
 end

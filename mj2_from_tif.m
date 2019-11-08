@@ -18,7 +18,7 @@ function mj2_from_tif(mj2_output_folder_name, tif_input_folder_name, compression
     job_ids = mj2_from_tif_helper(mj2_output_folder_name, tif_input_folder_name, compression_ratio, do_verify, do_run_on_cluster, zeros(1,0)) ;
     
     % Wait for the jobs to finish
-    fprintf('Waiting for mj2_from_tif() bjobs to finish...\n') ;
+    fprintf('Waiting for %d mj2_from_tif() bjobs to finish...\n', length(job_ids)) ;
     bwait(job_ids) ;
     fprintf('mj2_from_tif() bjobs are done.\n') ;
     
@@ -32,7 +32,7 @@ function job_ids = mj2_from_tif_helper(mj2_output_folder_name, tif_input_folder_
     if ~exist(mj2_output_folder_name, 'dir') ,
         mkdir(mj2_output_folder_name) ;
     end
-    tif_input_entity_names = setdiff(simple_dir(tif_input_folder_name), {'.' '..'}) ;
+    tif_input_entity_names = simple_dir(tif_input_folder_name) ;
     tif_input_entity_count = length(tif_input_entity_names) ;
     for i = 1 : tif_input_entity_count ,
         tif_input_entity_name = tif_input_entity_names{i} ;        
