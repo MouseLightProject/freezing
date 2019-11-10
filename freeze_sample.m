@@ -1,5 +1,5 @@
-mj2_from_tif(mj2_output_folder_path, tif_input_folder_path, compression_ratio, do_verify, do_run_on_cluster)
-%is_all_well = verify_frozen_files(mj2_output_folder_path, tif_input_folder_path, do_run_on_cluster) 
+% Actually do the compression, by launching a bunch of batch jobs
+mj2_from_tif(mj2_output_folder_path, tif_input_folder_path, compression_ratio, do_run_on_cluster)
 
 fprintf('Doing batch preverification of .tif files...\n') ;
 batch_preverify_tif_files_after_mj2_from_tif(mj2_output_folder_path, tif_input_folder_path, do_run_on_cluster)

@@ -10,3 +10,4 @@ mj2-from-tif-test-output-folder
 tif-from-mj2-test-input-folder
 freezing-test*
 thawing-test*
+*.mat
