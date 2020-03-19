@@ -41,6 +41,3 @@ fprintf('Final .mj2 count in %s is: %d\n', mj2_output_folder_path, final_mj2_cou
            
 % Report final status if we get this far
 fprintf('Compression and verification succeeded!\n') ;
-
-
-

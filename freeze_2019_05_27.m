@@ -1,4 +1,4 @@
-sample_date = '2018-10-01' ;
+sample_date = '2019-05-27' ;
 mj2_output_folder_path = sprintf('/nrs/mouselight-v/frozen/%s', sample_date) ;
 tif_input_folder_path = sprintf('/groups/mousebrainmicro/mousebrainmicro/data/%s', sample_date) ;
 compression_ratio = 10 ;

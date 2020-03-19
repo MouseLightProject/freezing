@@ -4,7 +4,7 @@ mj2_root_path = '/nrs/mouselight-v/frozen/2018-10-01' ;
 tif_file_paths = find_and_list(tif_root_path, @does_match_raw_tile_tif_name);
 tif_count = length(tif_file_paths) ;
 shuffled_file_indices = randperm(tif_count) ;
-tile_count = 50 ;
+tile_count = 3 ;
 random_file_indices = shuffled_file_indices(1:tile_count)
 
 mj2_file_paths = cell(1,tif_count) ;
