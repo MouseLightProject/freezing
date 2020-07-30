@@ -1,8 +1,8 @@
 % Actually do the compression, by launching a bunch of batch jobs
-mj2_from_tif(mj2_output_folder_path, tif_input_folder_path, compression_ratio, do_run_on_cluster)
+mj2_from_tif(mj2_output_folder_path, tif_input_folder_path, compression_ratio, do_run_on_cluster, maximum_running_slot_count)
 
 fprintf('Doing batch preverification of .tif files...\n') ;
-batch_preverify_tif_files_after_mj2_from_tif(mj2_output_folder_path, tif_input_folder_path, do_run_on_cluster)
+batch_preverify_tif_files_after_mj2_from_tif(mj2_output_folder_path, tif_input_folder_path, do_run_on_cluster, maximum_running_slot_count)
 fprintf('Done with batch preverification of .tif files.\n') ;
 
 fprintf('Doing verification of .tif files...\n') ;
@@ -38,6 +38,6 @@ if status~= 0 ,
 end
 final_mj2_count = str2double(result) ;
 fprintf('Final .mj2 count in %s is: %d\n', mj2_output_folder_path, final_mj2_count) ;
-           
+
 % Report final status if we get this far
 fprintf('Compression and verification succeeded!\n') ;

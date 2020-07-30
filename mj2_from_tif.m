@@ -1,4 +1,4 @@
-function mj2_from_tif(mj2_root_folder_path, tif_root_folder_path, compression_ratio, do_run_on_cluster)
+function mj2_from_tif(mj2_root_folder_path, tif_root_folder_path, compression_ratio, do_run_on_cluster, maximum_running_slot_count)
     % Converts each .mj2 file in input_folder_name to a multi-image .tif in
     % output_folder_name.  Will overwrite pre-existing files in
     % output_folder_name, if present.
@@ -9,14 +9,21 @@ function mj2_from_tif(mj2_root_folder_path, tif_root_folder_path, compression_ra
     if ~exist('do_run_on_cluster', 'var') || isempty(do_run_on_cluster) ,
         do_run_on_cluster = false ;
     end
+    if ~exist('maximum_running_slot_count', 'var') || isempty(maximum_running_slot_count) ,
+        maximum_running_slot_count = inf ;
+    end
 
     % Call the helper
     fprintf('Compressing .tifs to .mj2s...\n') ;
-    job_ids = mj2_from_tif_helper(mj2_root_folder_path, tif_root_folder_path, compression_ratio, do_run_on_cluster, zeros(1,0)) ;
+    slots_per_job = 1 ;
+    bsub_options = '-P mouselight -W 59 -J freeze' ;
+    bqueue = bqueue_type(do_run_on_cluster, bsub_options, slots_per_job, maximum_running_slot_count) ;
+    mj2_from_tif_helper_bang(bqueue, mj2_root_folder_path, tif_root_folder_path, compression_ratio) ;
     
     % Wait for the jobs to finish
-    fprintf('Waiting for %d mj2_from_tif() bjobs to finish...\n', length(job_ids)) ;
-    bwait(job_ids) ;
+    fprintf('Waiting for %d mj2_from_tif() bjobs to finish...\n', bqueue.queue_length()) ;    
+    %bwait(job_ids) ;
+    bqueue.run() ;
     fprintf('mj2_from_tif() bjobs are done.\n') ;
     
 %     bsub_options = '-n1 -P mouselight -W 59 -J freeze' ;
@@ -34,8 +41,7 @@ end
 
 
 
-function job_ids = mj2_from_tif_helper(mj2_folder_path, tif_folder_path, compression_ratio, do_run_on_cluster, initial_job_ids)
-    job_ids = initial_job_ids ;
+function mj2_from_tif_helper_bang(bqueue, mj2_folder_path, tif_folder_path, compression_ratio)
     if ~exist(mj2_folder_path, 'dir') ,
         mkdir(mj2_folder_path) ;
     end
@@ -49,7 +55,7 @@ function job_ids = mj2_from_tif_helper(mj2_folder_path, tif_folder_path, compres
             tif_side_subfolder_path = tif_side_file_path ;
             tif_side_subfolder_name = tif_side_file_name ;
             mj2_side_subfolder_path = fullfile(mj2_folder_path, tif_side_subfolder_name) ;
-            job_ids = mj2_from_tif_helper(mj2_side_subfolder_path, tif_side_subfolder_path, compression_ratio, do_run_on_cluster, job_ids) ;
+            mj2_from_tif_helper_bang(bqueue, mj2_side_subfolder_path, tif_side_subfolder_path, compression_ratio) ;            
         else
             % if a normal file, convert to .mj2 if it's a .tif, or just
             % copy otherwise
@@ -59,14 +65,17 @@ function job_ids = mj2_from_tif_helper(mj2_folder_path, tif_folder_path, compres
                 mj2_file_name = replace_extension(tif_file_name, '.mj2') ;
                 mj2_file_path = fullfile(mj2_folder_path, mj2_file_name) ;
                 if ~exist(mj2_file_path, 'file') ,
-                    bsub_options = '-n1 -P mouselight -W 59 -J freeze' ;
-                    job_id = bsub(do_run_on_cluster, ...
-                                  bsub_options, ...
-                                  @mj2_from_tif_single, ...
+%                     job_id = bsub(do_run_on_cluster, ...
+%                                   bsub_options, ...
+%                                   @mj2_from_tif_single, ...
+%                                       mj2_file_path, ...
+%                                       tif_file_path, ...
+%                                       compression_ratio) ;
+                    bqueue.enqueue(@mj2_from_tif_single, ...
                                       mj2_file_path, ...
                                       tif_file_path, ...
-                                      compression_ratio) ;
-                    job_ids = horzcat(job_ids, job_id) ;  %#ok<AGROW>
+                                      compression_ratio) ;    
+                    %job_ids = horzcat(job_ids, job_id) ;  %#ok<AGROW>
                 end
             else
                 mj2_side_file_path = fullfile(mj2_folder_path, tif_side_file_name) ;  % input not really a tif, output not really a .mj2

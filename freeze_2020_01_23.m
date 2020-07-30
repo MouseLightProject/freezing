@@ -1,4 +1,4 @@
-sample_date = '2020-02-24' ;
+sample_date = '2020-01-23' ;
 mj2_output_folder_path = sprintf('/groups/mousebrainmicro/mousebrainmicro/frozen/%s', sample_date) ;
 tif_input_folder_path = sprintf('/groups/mousebrainmicro/mousebrainmicro/data/%s', sample_date) ;
 compression_ratio = 10 ;
