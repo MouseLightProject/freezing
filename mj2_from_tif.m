@@ -18,7 +18,7 @@ function mj2_from_tif(mj2_root_folder_path, tif_root_folder_path, compression_ra
     slots_per_job = 1 ;
     bsub_options = '-P mouselight -W 59 -J freeze' ;
     bqueue = bqueue_type(do_run_on_cluster, bsub_options, slots_per_job, maximum_running_slot_count) ;
-    mj2_from_tif_helper_bang(bqueue, mj2_root_folder_path, tif_root_folder_path, compression_ratio) ;
+    mj2_from_tif_helper_bang(bqueue, bsub_options, slots_per_job, mj2_root_folder_path, tif_root_folder_path, compression_ratio) ;
     
     % Wait for the jobs to finish
     fprintf('Waiting for %d mj2_from_tif() bjobs to finish...\n', bqueue.queue_length()) ;    
@@ -41,7 +41,7 @@ end
 
 
 
-function mj2_from_tif_helper_bang(bqueue, mj2_folder_path, tif_folder_path, compression_ratio)
+function mj2_from_tif_helper_bang(bqueue, bsub_options, slots_per_job, mj2_folder_path, tif_folder_path, compression_ratio)
     if ~exist(mj2_folder_path, 'dir') ,
         mkdir(mj2_folder_path) ;
     end
@@ -55,7 +55,7 @@ function mj2_from_tif_helper_bang(bqueue, mj2_folder_path, tif_folder_path, comp
             tif_side_subfolder_path = tif_side_file_path ;
             tif_side_subfolder_name = tif_side_file_name ;
             mj2_side_subfolder_path = fullfile(mj2_folder_path, tif_side_subfolder_name) ;
-            mj2_from_tif_helper_bang(bqueue, mj2_side_subfolder_path, tif_side_subfolder_path, compression_ratio) ;            
+            mj2_from_tif_helper_bang(bqueue, bsub_options, slots_per_job, mj2_side_subfolder_path, tif_side_subfolder_path, compression_ratio) ;            
         else
             % if a normal file, convert to .mj2 if it's a .tif, or just
             % copy otherwise
@@ -71,7 +71,10 @@ function mj2_from_tif_helper_bang(bqueue, mj2_folder_path, tif_folder_path, comp
 %                                       mj2_file_path, ...
 %                                       tif_file_path, ...
 %                                       compression_ratio) ;
-                    bqueue.enqueue(@mj2_from_tif_single, ...
+                    bqueue.enqueue(slots_per_job, ...
+                                   [], ...
+                                   bsub_options, ...
+                                   @mj2_from_tif_single, ...
                                       mj2_file_path, ...
                                       tif_file_path, ...
                                       compression_ratio) ;    
