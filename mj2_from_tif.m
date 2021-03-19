@@ -17,7 +17,7 @@ function mj2_from_tif(mj2_root_folder_path, tif_root_folder_path, compression_ra
     fprintf('Compressing .tifs to .mj2s...\n') ;
     slots_per_job = 1 ;
     bsub_options = '-P mouselight -W 59 -J freeze' ;
-    bqueue = bqueue_type(do_run_on_cluster, bsub_options, slots_per_job, maximum_running_slot_count) ;
+    bqueue = bqueue_type(do_run_on_cluster, maximum_running_slot_count) ;
     mj2_from_tif_helper_bang(bqueue, bsub_options, slots_per_job, mj2_root_folder_path, tif_root_folder_path, compression_ratio) ;
     
     % Wait for the jobs to finish
