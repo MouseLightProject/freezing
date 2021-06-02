@@ -5,6 +5,7 @@ tif_input_folder_path = fullfile(path_to_this_folder, 'freezing-test-input-folde
 compression_ratio = 10 ;
 do_verify = false ;
 do_run_on_cluster = true ;
+maximum_running_slot_count = 40 ;
 
 % Delete the test output folder
 reset_for_test(mj2_output_folder_path) ;
