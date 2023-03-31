@@ -12,4 +12,5 @@ freezing-test*
 thawing-test*
 *.mat
 *.out.txt
+*.out2.txt
 nohup.out
