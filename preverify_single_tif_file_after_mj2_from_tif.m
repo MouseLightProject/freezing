@@ -1,6 +1,6 @@
 function preverify_single_tif_file_after_mj2_from_tif(tif_file_path, tif_root_folder_name, mj2_root_folder_name)
     % Checks that the mj2 is similar to the .tif, and outputs a .similar-mj2-exists file in the
-    % tif folder if the are similar.  If unable to verify, writes nothing.
+    % tif folder if they are similar.  If unable to verify, writes nothing.
     relative_file_path_of_tif = relpath(tif_file_path, tif_root_folder_name) ;
     relative_file_path_of_mj2 = replace_extension(relative_file_path_of_tif, '.mj2') ;
     mj2_file_path = fullfile(mj2_root_folder_name, relative_file_path_of_mj2) ;
