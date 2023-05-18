@@ -27,6 +27,11 @@ function test_something(freezing_or_thawing, raw_tiles_or_octree, local_or_clust
     % Delete the test output folder
     reset_for_test(output_folder_path) ;
 
+    % Make sure the input folder exists
+    if ~logical(exist(input_folder_path, 'dir')) ,
+        error('Input folder %s is missing, or is not a folder', input_folder_path) ;
+    end
+
     % Call the script
     if strcmp(freezing_or_thawing, 'freezing') ,
         freeze_mouselight_folder(...
