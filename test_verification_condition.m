@@ -1,4 +1,6 @@
 function test_verification_condition(freezing_or_thawing, raw_tiles_or_octree, local_or_cluster, stack_or_non_stack, exact_problem)    
+    % This function returns normally if all is well, throws an error if not.
+
     % Deal with the arguments
     if ~strcmp(freezing_or_thawing, 'freezing') && ~strcmp(freezing_or_thawing, 'thawing') ,
         error('freezing_or_thawing must be ''freezing'' or ''thawing''') ;
